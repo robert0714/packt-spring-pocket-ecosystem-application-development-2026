@@ -68,7 +68,7 @@ SET default_table_access_method = heap;
 -- Name: authorities; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.authorities (
+CREATE TABLE IF NOT EXISTS public.authorities (
     username text NOT NULL,
     authority text NOT NULL
 );
@@ -78,7 +78,7 @@ CREATE TABLE public.authorities (
 -- Name: dog; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.dog (
+CREATE TABLE IF NOT EXISTS public.dog (
     id integer NOT NULL,
     name text NOT NULL,
     description text NOT NULL,
@@ -93,7 +93,7 @@ CREATE TABLE public.dog (
 -- Name: dog_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.dog_id_seq
+CREATE SEQUENCE IF NOT EXISTS public.dog_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -113,7 +113,7 @@ ALTER SEQUENCE public.dog_id_seq OWNED BY public.dog.id;
 -- Name: spring_ai_chat_memory; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.spring_ai_chat_memory (
+CREATE TABLE IF NOT EXISTS public.spring_ai_chat_memory (
     conversation_id character varying(36) NOT NULL,
     content text NOT NULL,
     type character varying(10) NOT NULL,
@@ -126,7 +126,7 @@ CREATE TABLE public.spring_ai_chat_memory (
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.users (
+CREATE TABLE IF NOT EXISTS public.users (
     username text NOT NULL,
     password text NOT NULL,
     enabled boolean NOT NULL
@@ -137,7 +137,7 @@ CREATE TABLE public.users (
 -- Name: vector_store; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.vector_store (
+CREATE TABLE IF NOT EXISTS public.vector_store (
     id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     content text,
     metadata json,
@@ -180,21 +180,21 @@ ALTER TABLE ONLY public.vector_store
 -- Name: ix_auth_username; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX ix_auth_username ON public.authorities USING btree (username, authority);
+CREATE UNIQUE INDEX IF NOT EXISTS ix_auth_username ON public.authorities USING btree (username, authority);
 
 
 --
 -- Name: spring_ai_chat_memory_conversation_id_timestamp_idx; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX spring_ai_chat_memory_conversation_id_timestamp_idx ON public.spring_ai_chat_memory USING btree (conversation_id, "timestamp");
+CREATE INDEX IF NOT EXISTS spring_ai_chat_memory_conversation_id_timestamp_idx ON public.spring_ai_chat_memory USING btree (conversation_id, "timestamp");
 
 
 --
 -- Name: spring_ai_vector_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX spring_ai_vector_index ON public.vector_store USING hnsw (embedding public.vector_cosine_ops);
+CREATE INDEX IF NOT EXISTS spring_ai_vector_index ON public.vector_store USING hnsw (embedding public.vector_cosine_ops);
 
 
 --
