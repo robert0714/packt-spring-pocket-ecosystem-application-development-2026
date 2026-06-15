@@ -26,7 +26,7 @@ class ForwardingConfiguration {
 		var rc = builder.requestInterceptor(requestInterceptor).build();
 
 		return route() //
-			.GET("/gateway-dogs", _ -> {
+			.GET("/gateway-dogs", request -> {
 				var bodyType = new ParameterizedTypeReference<Collection<Map<String, Object>>>() {
 				};
 				var collectionOfDogMaps = rc //
